@@ -17,3 +17,6 @@ repositories {
 dependencies {
     implementation 'org.ow2.asm:asm:9.2'
 }
+
+compileJava { options.encoding = "UTF-8" }
+compileTestJava { options.encoding = "UTF-8" }
