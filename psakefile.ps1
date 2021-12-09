@@ -10,7 +10,7 @@ Task Demo {
     }
     Move-Item Main.class ./demo/Main.class -Force
     jar cvfe demo.jar demo.Main demo
-    Move-Item demo.jar ../build/libs/demo.jar
+    Move-Item demo.jar ../build/libs/demo.jar -Force
     Remove-Item demo -Recurse
     Set-Location ..
 }
