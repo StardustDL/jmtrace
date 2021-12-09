@@ -1,0 +1,1 @@
+java -javaagent:../build/libs/jmtrace-0.1.jar demo.Main
