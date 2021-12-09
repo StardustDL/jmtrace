@@ -21,6 +21,11 @@ public class Tracer {
                 System.identityHashCode(obj), descriptor);
     }
 
+    public static void traceAccessArray(Object obj, int index, boolean isRead) {
+        trace(isRead ? AccessMode.Read : AccessMode.Write, obj,
+                String.format("%s[%d]", obj.getClass().getComponentType().getCanonicalName(), index));
+    }
+
     public static void traceAccessField(boolean isRead, Object obj, String fieldName) {
         trace(isRead ? AccessMode.Read : AccessMode.Write, obj,
                 String.format("%s.%s", obj.getClass().getCanonicalName(), fieldName));

@@ -11,9 +11,47 @@ public class MethodTransformer extends MethodVisitor {
 
     @Override
     public void visitInsn(final int opcode) {
-        if (mv != null) {
-            mv.visitInsn(opcode);
+        if (opcode >= IALOAD && opcode <= SALOAD) {
+            // ... arrref index
+            mv.visitInsn(DUP2);
+            // ... arrref index arrref index
+            mv.visitLdcInsn(true);
+            // ... arrref index arrref index true
+            mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceAccessArray",
+                    "(Ljava/lang/Object;IZ)V", false);
+            // ... arrref index
+        } else if (opcode >= IASTORE && opcode <= SASTORE) {
+            if (isTwoSlotsValue(opcode)) {
+                // ... arrref index v1 v2
+                swap112();
+                // ... v1 v2 arrref index
+            } else {
+                // ... arrref index v
+                swap21();
+                // ... v arrref index
+            }
+
+            // ... arrref index
+            mv.visitInsn(DUP2);
+            // ... arrref index arrref index
+            mv.visitLdcInsn(false);
+            // ... arrref index arrref index false
+            mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceAccessArray",
+                    "(Ljava/lang/Object;IZ)V", false);
+
+            // ... arrref index
+            if (isTwoSlotsValue(opcode)) {
+                // ... v1 v2 arrref index
+                swap211();
+                // ... arrref index v1 v2
+            } else {
+                // ... v arrref index
+                swap12();
+                // ... arrref index v
+            }
         }
+
+        super.visitInsn(opcode);
     }
 
     @Override
@@ -121,15 +159,27 @@ public class MethodTransformer extends MethodVisitor {
         // ... i d1 d2
     }
 
-    private void swap22() {
-        // ... d1 d2 l1 l2
-        mv.visitInsn(DUP_X2);
-        // ... l1 l2 d1 d2 l1 l2
+    private void swap112() {
+        // ... i j l1 l2
+        mv.visitInsn(DUP2_X2);
+        // ... l1 l2 i j l1 l2
         mv.visitInsn(POP2);
-        // ... l1 l2 d1 d2
+        // ... l1 l2 i j
+    }
+
+    private void swap211() {
+        // ... l1 l2 i j
+        mv.visitInsn(DUP2_X2);
+        // ... i j l1 l2 i j
+        mv.visitInsn(POP2);
+        // ... i j l1 l2
     }
 
     private boolean isTwoSlotsValue(String descriptor) {
         return descriptor.equals("D") || descriptor.equals("J");
+    }
+
+    private boolean isTwoSlotsValue(int opcode) {
+        return opcode == LASTORE || opcode == DASTORE;
     }
 }

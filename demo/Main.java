@@ -2,15 +2,15 @@ package demo;
 
 public class Main {
 
-    public boolean[] az = new boolean[1];
-    public char[] ac = new char[1];
-    public byte[] ab = new byte[1];
-    public short[] as = new short[1];
-    public int[] ai = new int[1];
-    public long[] al = new long[1];
-    public float[] af = new float[1];
-    public double[] ad = new double[1];
-    public String[] astr = new String[1];
+    public boolean[] az = new boolean[2];
+    public char[] ac = new char[2];
+    public byte[] ab = new byte[2];
+    public short[] as = new short[2];
+    public int[] ai = new int[2];
+    public long[] al = new long[2];
+    public float[] af = new float[2];
+    public double[] ad = new double[2];
+    public String[] astr = new String[2];
 
     public static boolean sz;
     public static char sc;
@@ -43,6 +43,18 @@ public class Main {
         obj.af[0] = Main.sf;
         obj.ad[0] = Main.sd;
         obj.astr[0] = Main.sstr;
+
+        Main obj2 = new Main();
+
+        obj2.az[1] = obj.az[0];
+        obj2.ab[1] = obj.ab[0];
+        obj2.ac[1] = obj.ac[0];
+        obj2.as[1] = obj.as[0];
+        obj2.ai[1] = obj.ai[0];
+        obj2.al[1] = obj.al[0];
+        obj2.af[1] = obj.af[0];
+        obj2.ad[1] = obj.ad[0];
+        obj2.astr[1] = obj.astr[0];
 
         System.out.println("Hello, world!");
     }
