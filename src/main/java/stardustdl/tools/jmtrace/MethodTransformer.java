@@ -23,21 +23,27 @@ public class MethodTransformer extends MethodVisitor {
                 // ... objref
                 mv.visitInsn(DUP);
                 // ... objref objref
+                mv.visitLdcInsn(true);
+                // ... objref objref true
+                swap11();
+                // ... objref true objref
                 mv.visitLdcInsn(name);
-                // ... objref objref name
-                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceGetField",
-                        "(Ljava/lang/Object;Ljava/lang/String;)V", false);
+                // ... objref true objref name
+                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceAccessField",
+                        "(ZLjava/lang/Object;Ljava/lang/String;)V", false);
                 // ... objref
             }
                 break;
             case GETSTATIC: {
                 // ...
+                mv.visitLdcInsn(true);
+                // ... true
                 mv.visitLdcInsn(owner);
-                // ... onwer
+                // ... true onwer
                 mv.visitLdcInsn(name);
-                // ... onwer name
-                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceGetStatic",
-                        "(Ljava/lang/String;Ljava/lang/String;)V", false);
+                // ... true onwer name
+                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceAccessStatic",
+                        "(ZLjava/lang/String;Ljava/lang/String;)V", false);
                 // ...
             }
                 break;
@@ -51,16 +57,19 @@ public class MethodTransformer extends MethodVisitor {
                     swap11();
                     // ... v objref
                 }
-                
+
                 // ... objref
                 mv.visitInsn(DUP);
-                
                 // ... objref objref
+                mv.visitLdcInsn(false);
+                // ... objref objref false
+                swap11();
+                // ... objref false objref
                 mv.visitLdcInsn(name);
-                // ... objref objref name
-                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "tracePutField",
-                        "(Ljava/lang/Object;Ljava/lang/String;)V", false);
-                
+                // ... objref false objref name
+                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceAccessField",
+                        "(ZLjava/lang/Object;Ljava/lang/String;)V", false);
+
                 // ... objref
                 if (isTwoSlotsValue(descriptor)) {
                     // ... v1 v2 objref
@@ -75,12 +84,14 @@ public class MethodTransformer extends MethodVisitor {
                 break;
             case PUTSTATIC: {
                 // ...
+                mv.visitLdcInsn(false);
+                // ... false
                 mv.visitLdcInsn(owner);
-                // ... onwer
+                // ... false onwer
                 mv.visitLdcInsn(name);
-                // ... onwer name
-                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "tracePutStatic",
-                        "(Ljava/lang/String;Ljava/lang/String;)V", false);
+                // ... false onwer name
+                mv.visitMethodInsn(INVOKESTATIC, Tracer.getInternalClassName(), "traceAccessStatic",
+                        "(ZLjava/lang/String;Ljava/lang/String;)V", false);
                 // ...
             }
                 break;
@@ -108,6 +119,14 @@ public class MethodTransformer extends MethodVisitor {
         // ... i d1 d2 i
         mv.visitInsn(POP);
         // ... i d1 d2
+    }
+
+    private void swap22() {
+        // ... d1 d2 l1 l2
+        mv.visitInsn(DUP_X2);
+        // ... l1 l2 d1 d2 l1 l2
+        mv.visitInsn(POP2);
+        // ... l1 l2 d1 d2
     }
 
     private boolean isTwoSlotsValue(String descriptor) {

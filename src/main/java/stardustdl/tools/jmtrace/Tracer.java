@@ -21,15 +21,12 @@ public class Tracer {
                 System.identityHashCode(obj), descriptor);
     }
 
-    public static void traceGetField(Object obj, String fieldName) {
-        trace(AccessMode.Read, obj, String.format("%s.%s", obj.getClass().getCanonicalName(), fieldName));
+    public static void traceAccessField(boolean isRead, Object obj, String fieldName) {
+        trace(isRead ? AccessMode.Read : AccessMode.Write, obj,
+                String.format("%s.%s", obj.getClass().getCanonicalName(), fieldName));
     }
 
-    public static void tracePutField(Object obj, String fieldName) {
-        trace(AccessMode.Write, obj, String.format("%s.%s", obj.getClass().getCanonicalName(), fieldName));
-    }
-
-    public static void traceGetStatic(String owner, String fieldName) {
+    public static void traceAccessStatic(boolean isRead, String owner, String fieldName) {
         owner = owner.replace('/', '.');
         Class<?> cls = null;
         try {
@@ -39,19 +36,7 @@ public class Tracer {
             return;
         }
 
-        trace(AccessMode.Read, cls, String.format("%s.%s", cls.getCanonicalName(), fieldName));
-    }
-
-    public static void tracePutStatic(String owner, String fieldName) {
-        owner = owner.replace('/', '.');
-        Class<?> cls = null;
-        try {
-            cls = Class.forName(owner);
-        } catch (ClassNotFoundException ex) {
-            System.err.printf("Failed to load class %s", owner);
-            return;
-        }
-
-        trace(AccessMode.Write, cls, String.format("%s.%s", cls.getCanonicalName(), fieldName));
+        trace(isRead ? AccessMode.Read : AccessMode.Write, cls,
+                String.format("%s.%s", cls.getCanonicalName(), fieldName));
     }
 }
