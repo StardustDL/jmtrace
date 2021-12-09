@@ -18,3 +18,5 @@ Task Demo {
 Task Test {
     Exec { wsl -- ./jmtrace -jar ./build/libs/demo.jar }
 }
+
+Task try -depends Build, Test
