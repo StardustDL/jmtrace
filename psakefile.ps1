@@ -16,7 +16,12 @@ Task Demo {
 }
 
 Task Test {
+    Exec { chmod +x ./jmtrace }
+    Exec { ./jmtrace -jar ./build/libs/demo.jar }
+}
+
+Task Local {
     Exec { wsl -- ./jmtrace -jar ./build/libs/demo.jar }
 }
 
-Task try -depends Build, Test
+Task try -depends Build, Local

@@ -16,7 +16,7 @@ public class Transformer extends ClassVisitor {
             final String descriptor,
             final String signature,
             final String[] exceptions) {
-        System.out.println(name);
+        System.out.printf("%s %s %s\n", name, descriptor, signature);
         if (cv != null) {
             return cv.visitMethod(access, name, descriptor, signature, exceptions);
         }
