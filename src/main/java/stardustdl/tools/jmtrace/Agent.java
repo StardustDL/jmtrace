@@ -17,10 +17,10 @@ public class Agent {
                     Class<?> clazz,
                     ProtectionDomain protectionDomain,
                     byte[] byteCode) throws IllegalClassFormatException {
-                if (loader == null || className.startsWith("stardustdl/tools/jmtrace/"))
+                if (loader == null || className.startsWith("stardustdl/tools/jmtrace/") || className.startsWith("java") || className.startsWith("sun") || className.startsWith("javax") || className.startsWith("com/sun"))
                     return byteCode;
                 ClassReader reader = new ClassReader(byteCode);
-                ClassWriter writer = new ClassWriter(reader, 0);
+                ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES);
                 reader.accept(new ClassTransformer(writer), 0);
                 return writer.toByteArray();
             }

@@ -25,6 +25,10 @@ public class Tracer {
         trace(AccessMode.Read, obj, String.format("%s.%s", obj.getClass().getCanonicalName(), fieldName));
     }
 
+    public static void tracePutField(Object obj, String fieldName) {
+        trace(AccessMode.Write, obj, String.format("%s.%s", obj.getClass().getCanonicalName(), fieldName));
+    }
+
     public static void traceGetStatic(String owner, String fieldName) {
         owner = owner.replace('/', '.');
         Class<?> cls = null;
