@@ -5,6 +5,7 @@ plugins {
 version = '0.1'
 
 jar {
+    archiveBaseName = 'jmtrace'
     manifest {
         attributes("Premain-Class": "stardustdl.tools.jmtrace.Agent")
     }
