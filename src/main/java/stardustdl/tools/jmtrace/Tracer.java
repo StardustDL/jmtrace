@@ -16,7 +16,7 @@ public class Tracer {
 
     private static PrintStream Output = System.err;
 
-    public static void trace(AccessMode mode, Object obj, String descriptor) {
+    public synchronized static void trace(AccessMode mode, Object obj, String descriptor) {
         Output.printf("%c %d %x %s\n", mode.name().charAt(0), Thread.currentThread().getId(),
                 System.identityHashCode(obj), descriptor);
     }
