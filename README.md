@@ -1,4 +1,6 @@
-# jmtrace
+![jmtrace](https://socialify.git.ci/StardustDL/jmtrace/image?description=1&font=Bitter&forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light)
+
+![CI](https://github.com/StardustDL/jmtrace/workflows/CI/badge.svg) ![](https://img.shields.io/github/license/StardustDL/jmtrace.svg)
 
 A java agent that trace all shared memory accesses of the classes in a given Java jar package.
 
